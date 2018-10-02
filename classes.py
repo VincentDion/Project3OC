@@ -132,7 +132,7 @@ class QuestObjects:
 
 class Enemy:
 	"""Enemy class, a bit redundant in this code but in case of future ennemy additions"""
-	def __init__ (self, sprite, level, case_x, case_y, pos_x, pos_y):
+	def __init__ (self, sprite, level, case_x, case_y):
 
 		self.sprite = pygame.image.load(sprite).convert_alpha()
 
@@ -143,7 +143,7 @@ class Enemy:
 
 		self.level = level
 
-	def sleep(self, sprite, level, case_x, case_y, pos_x, pos_y):
+	def sleep(self, sprite, level, case_x, case_y):
 		"""Simple method to change the sprite of the agent"""
 		self.sprite = pygame.image.load(sprite).convert_alpha()
 		

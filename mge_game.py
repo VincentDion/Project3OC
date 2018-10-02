@@ -84,8 +84,7 @@ while continue_main:
 		level.show_game(window)
 
 		macgyver = Hero(image_hero, level)
-		badguy = Enemy(image_badguy, level, 13, 14, 390, 420)
-
+		badguy = Enemy(image_badguy, level, 13, 14)
 
 		#Really clunky way of random position for objects, will be changed
 		#We assign random x and y position for the 3 objects directly
@@ -206,7 +205,7 @@ while continue_main:
 		#T in file stand for 'Test', where the program test if the user got the 3 items or not
 		#If he does, the guard sleeps and he can progress to the Finish (F) case
 		if level.structure[macgyver.case_y][macgyver.case_x] == 'T' and object_count == 3:
-			badguy.sleep(image_badguy_sleeping, level, 13, 14, 390, 420)
+			badguy.sleep(image_badguy_sleeping, level, 13, 14)
 			window.blit(badguy.sprite, (badguy.x, badguy.y))
 			pygame.display.flip()
 
