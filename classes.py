@@ -112,7 +112,7 @@ class Hero:
 
 class QuestObjects:
 	"""Creation of the class for the objects needed to finish the level.
-	Item are randomly placed but ine the main code : mge_game.py
+	Item are randomly placed but in the main code : mge_game.py
 	When the user grab an item, it is displaced to the inventory bar"""
 	def __init__(self, sprite, level, case_x, case_y):
 		self.sprite = pygame.image.load(sprite).convert_alpha()

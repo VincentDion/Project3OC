@@ -16,6 +16,7 @@ from pygame.locals import *
 
 from classes import *
 from constants import *
+#from functions import *
 
 pygame.init()
 
@@ -41,6 +42,15 @@ while continue_main:
 	continue_victory_screen = 0
 	continue_death_screen = 0
 
+	#function to set loops, wanted to make another file but failed to import it, need to work on that
+	def setloops(victory, death, game, home, main):
+		""" Fonction of set loops to either stop them, activate them or continue them"""
+		global continue_victory_screen, continue_death_screen, continue_game, continue_home, continue_main
+		continue_victory_screen = victory
+		continue_death_screen = death
+		continue_game = game
+		continue_home = home
+		continue_main = main
 
 	#HOME LOOP
 	while continue_home:
@@ -52,15 +62,14 @@ while continue_main:
 		
 			#End of all the loops if escape is pressed, works at any moment of the game
 			if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-				continue_home = 0
-				continue_game = 0
-				continue_main = 0
+				setloops(0,0,0,0,0)
+
 				#Variable for a level choice in case of new additions
 				choice = 0
 			
 			#Here is the line of code that need to be changed if there is new levels	
 			elif event.type == KEYDOWN and event.key != K_ESCAPE:				
-				continue_home = 0
+				setloops(0,0,1,0,1)
 				choice = 'level1'
 
 	#Check if a choice as been made by the user, in case of future levels and user input required
@@ -116,8 +125,6 @@ while continue_main:
 		object_count = 0
 
 
-
-
 	#GAME LOOP
 	while continue_game:
 
@@ -125,9 +132,9 @@ while continue_main:
 
 		for event in pygame.event.get():
 
+			#End of all the loops if escape is pressed
 			if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-				continue_game = 0
-				continue_main = 0
+				setloops(0,0,0,0,0)
 
 			#Massive code, need to find a way to reduce the hard move of objects to inventory
 			elif event.type == KEYDOWN:
@@ -203,11 +210,14 @@ while continue_main:
 			window.blit(badguy.sprite, (badguy.x, badguy.y))
 			pygame.display.flip()
 
+		#MacGyver reaches the Test case without 3 objects, he dies
 		if level.structure[macgyver.case_y][macgyver.case_x] == 'T' and object_count < 3:
-			continue_death_screen = 1
+			setloops(0,1,0,0,1)
 
+		#MacGyver reaches the Finish case, game is won
 		if level.structure[macgyver.case_y][macgyver.case_x] == 'F':
-			continue_victory_screen = 1
+			setloops(1,0,0,0,1)
+			#continue_victory_screen = 1
 
 
 		#VICTORY SCREEN LOOP
@@ -215,16 +225,14 @@ while continue_main:
 			
 			pygame.time.Clock().tick(30)
 			for event in pygame.event.get():
-			
+
+				#End of all the loops if escape is pressed
 				if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-					continue_home = 0
-					continue_game = 0
-					continue_victory_screen = 0
-					continue_main = 0
-					
+					setloops(0,0,0,0,0)
+				
+				#User is back to home screen if he presses any key	
 				elif event.type == KEYDOWN and event.key != K_ESCAPE:				
-					continue_victory_screen = 0
-					continue_game = 0
+					setloops(0,0,0,1,1)
 
 			victory_screen = pygame.image.load(image_victory_screen).convert()
 			window.blit(victory_screen, (0,0))
@@ -236,16 +244,13 @@ while continue_main:
 			pygame.time.Clock().tick(30)
 			for event in pygame.event.get():
 			
+				#End of all the loops if escape is pressed
 				if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-					continue_home = 0
-					continue_game = 0
-					continue_victory_screen = 0
-					continue_death_screen = 0
-					continue_main = 0
-					
+					setloops(0,0,0,0,0)
+				
+				#User is back to home screen if he presses any key
 				elif event.type == KEYDOWN and event.key != K_ESCAPE:				
-					continue_death_screen = 0
-					continue_game = 0
+					setloops(0,0,0,1,1)
 
 			death_screen = pygame.image.load(image_death_screen).convert()
 			window.blit(death_screen, (0,0))
