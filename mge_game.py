@@ -177,8 +177,8 @@ while continue_main:
 						object_count += 1
 
 				#Instant death for random test
-				#elif event.key == K_d:
-				#	continue_game = 0
+				elif event.key == K_d:
+					continue_game = 0
 
 
 		#Display of graphic elements
