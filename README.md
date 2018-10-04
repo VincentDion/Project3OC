@@ -4,12 +4,12 @@ Welcome in the README file of this MacGyver escapes! game, created by Vincent Di
 
 # Current version
 
-The game is functional and therefore is in its 1.0 version. Without additional code development, you may add new level, although you need to change few lines in the main code to let the user choose the appropriate level. Consult the existing level to see how to create another one, as it is relatively straightforward in its structure (W for walls, O for nothing, T for Test, S for start, F for Finish). It is strongly advised to place the Finish in the bottom-right corner, or you may need to alter the code a bit to change the position of the enemy.
+The game is functional and therefore is in its 1.1 version. Without additional code development, you may add new level, although you need to change few lines in the main code to let the user choose the appropriate level. Consult the existing level to see how to create another one, as it is relatively straightforward in its structure (W for walls, O for nothing, T for Test, S for start, F for Finish). It is strongly advised to place the Finish in the bottom-right corner, or you may need to alter the code a bit to change the position of the enemy.
 You may quit the game at any time by pressing the ESCAPE button. You can’t however reset a level in the current version.
 Although the game is working as intended in its current version, I am not satisfied at all with its code architecture which will undergo some change soon. Improvements for the 1.1 version are detailed in the next section.
 
 
-# Improvements for next version
+# Improvements for next versions
 
 -	Improve the code by reducing number of treatments, especially in the random placement of objects,
 -	Diminish the number of code lines by eliminating the repetitive operations that can be add as functions.
