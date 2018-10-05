@@ -62,20 +62,22 @@ class Level:
             num_line += 1
 
 
-class Hero:
+class Characters:
     """
-    Creation of the hero class, the character controlled by the user
+    Creation of the Characters class, 
+    corresponding to the characters controlled by the user,
+    and the badguy at the end.
     """
-    def __init__(self, sprite, level):
+    def __init__(self, sprite, level, case_x, case_y):
         """
         Initialization of Hero class, attributes concern its sprite,
         position in pixel and case and the level is in
         """
         self.sprite = pygame.image.load(sprite).convert_alpha()
-        self.case_x = 0
-        self.case_y = 0
-        self.x = 0
-        self.y = 0
+        self.case_x = case_x
+        self.case_y = case_y
+        self.x = case_x * SIZE_SPRITE
+        self.y = case_y * SIZE_SPRITE
         #in case there are more than one level in near future
         self.level = level
 
@@ -115,6 +117,20 @@ class Hero:
                     self.y = self.case_y * SIZE_SPRITE
             self.direction = self.sprite
 
+    def sleep(self, sprite, level, case_x, case_y):
+        """
+        Simple method to change the sprite of the agent,
+        This method concerns the enemies of the hero
+        """
+        self.sprite = pygame.image.load(sprite).convert_alpha()
+
+        self.case_x = case_x
+        self.case_y = case_y
+        self.x = case_x * SIZE_SPRITE
+        self.y = case_y * SIZE_SPRITE
+        self.level = level
+
+
 
 class QuestObjects:
     """
@@ -142,34 +158,3 @@ class QuestObjects:
         """
         self.x = pos_x
         self.y = pos_y
-
-#Special class for Enemy, but can surely be merged with 'Hero' class, in next version
-class Enemy:
-    """
-    Enemy class, a bit redundant in this code but in case of future ennemy additions
-    """
-
-    def __init__ (self, sprite, level, case_x, case_y):
-        """
-        Initialization of Enemy class, with attributes of position,
-        in pixels and cases, and level they are in
-        """
-        self.sprite = pygame.image.load(sprite).convert_alpha()
-        self.case_x = case_x
-        self.case_y = case_y
-        self.x = case_x * SIZE_SPRITE
-        self.y = case_y * SIZE_SPRITE
-        self.level = level
-
-    def sleep(self, sprite, level, case_x, case_y):
-        """
-        Simple method to change the sprite of the agent
-        """
-        self.sprite = pygame.image.load(sprite).convert_alpha()
-
-        #Many attributes that we can surely reduce in future versions
-        self.case_x = case_x
-        self.case_y = case_y
-        self.x = case_x * SIZE_SPRITE
-        self.y = case_y * SIZE_SPRITE
-        self.level = level

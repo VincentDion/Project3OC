@@ -16,7 +16,6 @@ from pygame.locals import *
 
 from classes import *
 from constants import *
-#from functions import *
 
 pygame.init()
 
@@ -85,8 +84,8 @@ while continue_main:
         level.generate()
         level.show_game(window)
 
-        macgyver = Hero(IMAGE_HERO, level)
-        badguy = Enemy(IMAGE_BADGUY, level, 13, 14)
+        macgyver = Characters(IMAGE_HERO, level, 0, 0)
+        badguy = Characters(IMAGE_BADGUY, level, 13, 14)
 
         #Really clunky way of random position for objects, will be changed
         #We assign random x and y position for the 3 objects directly
@@ -220,7 +219,6 @@ while continue_main:
         #MacGyver reaches the Finish case, game is won
         if level.structure[macgyver.case_y][macgyver.case_x] == 'F':
             setloops(1,0,0,0,1)
-            #continue_victory_screen = 1
 
 
         #VICTORY SCREEN LOOP
@@ -258,4 +256,3 @@ while continue_main:
             death_screen = pygame.image.load(IMAGE_DEATH_SCREEN).convert()
             window.blit(death_screen, (0,0))
             pygame.display.flip()
-
