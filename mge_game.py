@@ -21,237 +21,241 @@ from constants import *
 pygame.init()
 
 #Opening of the initial window, initial size of 450*500
-window = pygame.display.set_mode((side_window, side_window + height_inventory_space))
+window = pygame.display.set_mode((SIDE_WINDOW, SIDE_WINDOW + HEIGHT_INVENTORY_SPACE))
 
-icon = pygame.image.load(image_window_icon)
+icon = pygame.image.load(IMAGE_WINDOW_ICON)
 pygame.display.set_icon(icon)
-pygame.display.set_caption(window_title)
+pygame.display.set_caption(WINDOW_TITLE)
 
 #MAIN LOOP
 continue_main = 1
-while continue_main:	
-	#Loading and display of home window
-	home = pygame.image.load(image_main_menu).convert()
-	window.blit(home, (0,0))
+while continue_main:
+    #Loading and display of home window
+    home = pygame.image.load(IMAGE_MAIN_MENU).convert()
+    window.blit(home, (0,0))
 
-	pygame.display.flip()
+    pygame.display.flip()
 
-	#Variables for the different loops
-	continue_game = 1
-	continue_home = 1
-	continue_victory_screen = 0
-	continue_death_screen = 0
+    #Variables for the different loops
+    continue_game = 1
+    continue_home = 1
+    continue_victory_screen = 0
+    continue_death_screen = 0
 
-	#function to set loops, wanted to make another file but failed to import it, need to work on that
-	def setloops(victory, death, game, home, main):
-		""" Fonction of set loops to either stop them, activate them or continue them"""
-		global continue_victory_screen, continue_death_screen, continue_game, continue_home, continue_main
-		continue_victory_screen = victory
-		continue_death_screen = death
-		continue_game = game
-		continue_home = home
-		continue_main = main
+    #function to set loops, wanted to make another file but failed to import it, need to work on that
+    def setloops(victory, death, game, home, main):
+        """
+        Fonction of set loops to either stop them, activate them or continue them
+        The loop concerned are the main windows, home window, game window, deathscreen and victoryscreen
+        """
+        global continue_victory_screen, continue_death_screen, continue_game, continue_home, continue_main
+        continue_victory_screen = victory
+        continue_death_screen = death
+        continue_game = game
+        continue_home = home
+        continue_main = main
 
-	#HOME LOOP
-	while continue_home:
-	
-		#Loop speed limitation
-		pygame.time.Clock().tick(30)
-	
-		for event in pygame.event.get():
-		
-			#End of all the loops if escape is pressed, works at any moment of the game
-			if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-				setloops(0,0,0,0,0)
+    #HOME LOOP
+    while continue_home:
 
-				#Variable for a level choice in case of new additions
-				choice = 0
-			
-			#Here is the line of code that need to be changed if there is new levels	
-			elif event.type == KEYDOWN and event.key != K_ESCAPE:				
-				setloops(0,0,1,0,1)
-				choice = 'level1'
+        #Loop speed limitation
+        pygame.time.Clock().tick(30)
 
-	#Check if a choice as been made by the user, in case of future levels and user input required
-	if choice != 0:
-		
-		#Creation and loading of the level + characters and objects
-		fond = pygame.image.load(image_floor).convert()
-		inventory = pygame.image.load(image_inventory).convert()	
-		
-		level = Level(choice)
-		level.generate()
-		level.show_game(window)
+        for event in pygame.event.get():
 
-		macgyver = Hero(image_hero, level)
-		badguy = Enemy(image_badguy, level, 13, 14)
+            #End of all the loops if escape is pressed, works at any moment of the game
+            if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                setloops(0,0,0,0,0)
 
-		#Really clunky way of random position for objects, will be changed
-		#We assign random x and y position for the 3 objects directly
-		#and test they are not similar or ending in a wall
-		object1_case_y = 14
-		object1_case_x = 14
-		object2_case_y = 14
-		object2_case_x = 14
-		object3_case_y = 14
-		object3_case_x = 14
+                #Variable for a level choice in case of new additions
+                choice = 0
 
-		while level.structure[object1_case_y][object1_case_x] != 'O' or level.structure[object2_case_y][object2_case_x] != 'O' or level.structure[object3_case_y][object3_case_x] != 'O':
+            #Here is the line of code that need to be changed if there is new levels	
+            elif event.type == KEYDOWN and event.key != K_ESCAPE:				
+                setloops(0,0,1,0,1)
+                choice = 'level1'
 
-			object1_case_y = random.randint(0,14)
-			object1_case_x = random.randint(0,14)
-			object2_case_y = random.randint(0,14)
-			object2_case_x = random.randint(0,14)
-			object3_case_y = random.randint(0,14)
-			object3_case_x = random.randint(0,14)
+    #Check if a choice as been made by the user, in case of future levels and user input required
+    if choice != 0:
 
-			if object1_case_y == object2_case_y and object1_case_x == object2_case_x:
-				object2_case_y = 14
-				object2_case_x = 14
-			elif object1_case_y == object3_case_y and object1_case_x == object3_case_x:
-				object3_case_y = 14
-				object3_case_x = 14
-			elif object3_case_y == object2_case_y and object3_case_x == object2_case_x:
-				object3_case_y = 14
-				object3_case_x = 14
+        #Creation and loading of the level + characters and objects
+        fond = pygame.image.load(IMAGE_FLOOR).convert()
+        inventory = pygame.image.load(IMAGE_INVENTORY).convert()	
+        level = Level(choice)
+        level.generate()
+        level.show_game(window)
 
-		#Creation of the 3 objects with the random x and y attributed above
-		object1 = QuestObjects(image_object1, level, object1_case_x, object1_case_y)
-		object2 = QuestObjects(image_object2, level, object2_case_x, object2_case_y)
-		object3 = QuestObjects(image_object3, level, object3_case_x, object3_case_y)
-		
-		#Counter for the object, hero need that variable to be at 3 to finish the game
-		object_count = 0
+        macgyver = Hero(IMAGE_HERO, level)
+        badguy = Enemy(IMAGE_BADGUY, level, 13, 14)
 
+        #Really clunky way of random position for objects, will be changed
+        #We assign random x and y position for the 3 objects directly
+        #and test they are not similar or ending in a wall
+        object1_case_y = 14
+        object1_case_x = 14
+        object2_case_y = 14
+        object2_case_x = 14
+        object3_case_y = 14
+        object3_case_x = 14
 
-	#GAME LOOP
-	while continue_game:
+        #Big line of conditions cut in 3 for more clarity of code
+        while level.structure[object1_case_y][object1_case_x] != 'O' \
+        or level.structure[object2_case_y][object2_case_x] != 'O' \
+        or level.structure[object3_case_y][object3_case_x] != 'O':
 
-		pygame.time.Clock().tick(30)
+            object1_case_y = random.randint(0,14)
+            object1_case_x = random.randint(0,14)
+            object2_case_y = random.randint(0,14)
+            object2_case_x = random.randint(0,14)
+            object3_case_y = random.randint(0,14)
+            object3_case_x = random.randint(0,14)
 
-		for event in pygame.event.get():
+            if object1_case_y == object2_case_y and object1_case_x == object2_case_x:
+                object2_case_y = 14
+                object2_case_x = 14
+            elif object1_case_y == object3_case_y and object1_case_x == object3_case_x:
+                object3_case_y = 14
+                object3_case_x = 14
+            elif object3_case_y == object2_case_y and object3_case_x == object2_case_x:
+                object3_case_y = 14
+                object3_case_x = 14
 
-			#End of all the loops if escape is pressed
-			if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-				setloops(0,0,0,0,0)
+        #Creation of the 3 objects with the random x and y attributed above
+        object1 = QuestObjects(IMAGE_OBJECT1, level, object1_case_x, object1_case_y)
+        object2 = QuestObjects(IMAGE_OBJECT2, level, object2_case_x, object2_case_y)
+        object3 = QuestObjects(IMAGE_OBJECT3, level, object3_case_x, object3_case_y)
 
-			#Massive code, need to find a way to reduce the hard move of objects to inventory
-			elif event.type == KEYDOWN:
-				if event.key == K_RIGHT:
-					macgyver.move('right')
-					if macgyver.x == object1.x and macgyver.y == object1.y :
-						object1.move_inventory(150,460)
-						object_count += 1
-					elif macgyver.x == object2.x and macgyver.y == object2.y :
-						object2.move_inventory(200,460)
-						object_count += 1
-					elif macgyver.x == object3.x and macgyver.y == object3.y :
-						object3.move_inventory(250,460)
-						object_count += 1
-				elif event.key == K_LEFT:
-					macgyver.move('left')
-					if macgyver.x == object1.x and macgyver.y == object1.y :
-						object1.move_inventory(150,460)
-						object_count += 1
-					elif macgyver.x == object2.x and macgyver.y == object2.y :
-						object2.move_inventory(200,460)
-						object_count += 1
-					elif macgyver.x == object3.x and macgyver.y == object3.y :
-						object3.move_inventory(250,460)
-						object_count += 1
-				elif event.key == K_UP:
-					macgyver.move('up')
-					if macgyver.x == object1.x and macgyver.y == object1.y :
-						object1.move_inventory(150,460)
-						object_count += 1
-					elif macgyver.x == object2.x and macgyver.y == object2.y :
-						object2.move_inventory(200,460)
-						object_count += 1
-					elif macgyver.x == object3.x and macgyver.y == object3.y :
-						object3.move_inventory(250,460)
-						object_count += 1
-				elif event.key == K_DOWN:
-					macgyver.move('down')
-					if macgyver.x == object1.x and macgyver.y == object1.y :
-						object1.move_inventory(150,460)
-						object_count += 1
-					elif macgyver.x == object2.x and macgyver.y == object2.y :
-						object2.move_inventory(200,460)
-						object_count += 1
-					elif macgyver.x == object3.x and macgyver.y == object3.y :
-						object3.move_inventory(250,460)
-						object_count += 1
-
-				#Instant death for random test
-				elif event.key == K_d:
-					continue_game = 0
+        #Counter for the object, hero need that variable to be at 3 to finish the game
+        object_count = 0
 
 
-		#Display of graphic elements
-		window.blit(fond, (0,0))
-		window.blit(inventory, (0,450))
+    #GAME LOOP
+    while continue_game:
 
-		level.show_game(window)
+        pygame.time.Clock().tick(30)
 
-		window.blit(badguy.sprite, (badguy.x, badguy.y))
-		window.blit(object1.sprite, (object1.x, object1.y))
-		window.blit(object2.sprite, (object2.x, object2.y))
-		window.blit(object3.sprite, (object3.x, object3.y))
-		window.blit(macgyver.direction, (macgyver.x, macgyver.y))
+        for event in pygame.event.get():
+            #End of all the loops if escape is pressed
+            if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                setloops(0,0,0,0,0)
 
-		pygame.display.flip()
+            #Massive code, need to find a way to reduce the hard move of objects to inventory
+            elif event.type == KEYDOWN:
+                if event.key == K_RIGHT:
+                    macgyver.move('right')
+                    if macgyver.x == object1.x and macgyver.y == object1.y :
+                        object1.move_inventory(150,460)
+                        object_count += 1
+                    elif macgyver.x == object2.x and macgyver.y == object2.y :
+                        object2.move_inventory(200,460)
+                        object_count += 1
+                    elif macgyver.x == object3.x and macgyver.y == object3.y :
+                        object3.move_inventory(250,460)
+                        object_count += 1
+                elif event.key == K_LEFT:
+                    macgyver.move('left')
+                    if macgyver.x == object1.x and macgyver.y == object1.y :
+                        object1.move_inventory(150,460)
+                        object_count += 1
+                    elif macgyver.x == object2.x and macgyver.y == object2.y :
+                        object2.move_inventory(200,460)
+                        object_count += 1
+                    elif macgyver.x == object3.x and macgyver.y == object3.y :
+                        object3.move_inventory(250,460)
+                        object_count += 1
+                elif event.key == K_UP:
+                    macgyver.move('up')
+                    if macgyver.x == object1.x and macgyver.y == object1.y :
+                        object1.move_inventory(150,460)
+                        object_count += 1
+                    elif macgyver.x == object2.x and macgyver.y == object2.y :
+                        object2.move_inventory(200,460)
+                        object_count += 1
+                    elif macgyver.x == object3.x and macgyver.y == object3.y :
+                        object3.move_inventory(250,460)
+                        object_count += 1
+                elif event.key == K_DOWN:
+                    macgyver.move('down')
+                    if macgyver.x == object1.x and macgyver.y == object1.y :
+                        object1.move_inventory(150,460)
+                        object_count += 1
+                    elif macgyver.x == object2.x and macgyver.y == object2.y :
+                        object2.move_inventory(200,460)
+                        object_count += 1
+                    elif macgyver.x == object3.x and macgyver.y == object3.y :
+                        object3.move_inventory(250,460)
+                        object_count += 1
 
-		#Condition for putting the badguy to sleep, dying and winning base on the level structure
-		#T in file stand for 'Test', where the program test if the user got the 3 items or not
-		#If he does, the guard sleeps and he can progress to the Finish (F) case
-		if level.structure[macgyver.case_y][macgyver.case_x] == 'T' and object_count == 3:
-			badguy.sleep(image_badguy_sleeping, level, 13, 14)
-			window.blit(badguy.sprite, (badguy.x, badguy.y))
-			pygame.display.flip()
-
-		#MacGyver reaches the Test case without 3 objects, he dies
-		if level.structure[macgyver.case_y][macgyver.case_x] == 'T' and object_count < 3:
-			setloops(0,1,0,0,1)
-
-		#MacGyver reaches the Finish case, game is won
-		if level.structure[macgyver.case_y][macgyver.case_x] == 'F':
-			setloops(1,0,0,0,1)
-			#continue_victory_screen = 1
+                #Instant death for random test
+                elif event.key == K_d:
+                    continue_game = 0
 
 
-		#VICTORY SCREEN LOOP
-		while continue_victory_screen:
-			
-			pygame.time.Clock().tick(30)
-			for event in pygame.event.get():
+        #Display of graphic elements
+        window.blit(fond, (0,0))
+        window.blit(inventory, (0,450))
 
-				#End of all the loops if escape is pressed
-				if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-					setloops(0,0,0,0,0)
-				
-				#User is back to home screen if he presses any key	
-				elif event.type == KEYDOWN and event.key != K_ESCAPE:				
-					setloops(0,0,0,1,1)
+        level.show_game(window)
 
-			victory_screen = pygame.image.load(image_victory_screen).convert()
-			window.blit(victory_screen, (0,0))
-			pygame.display.flip()
+        window.blit(badguy.sprite, (badguy.x, badguy.y))
+        window.blit(object1.sprite, (object1.x, object1.y))
+        window.blit(object2.sprite, (object2.x, object2.y))
+        window.blit(object3.sprite, (object3.x, object3.y))
+        window.blit(macgyver.sprite, (macgyver.x, macgyver.y))
 
-		#DEATH SCREEN LOOP
-		while continue_death_screen:
-			
-			pygame.time.Clock().tick(30)
-			for event in pygame.event.get():
-			
-				#End of all the loops if escape is pressed
-				if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
-					setloops(0,0,0,0,0)
-				
-				#User is back to home screen if he presses any key
-				elif event.type == KEYDOWN and event.key != K_ESCAPE:				
-					setloops(0,0,0,1,1)
+        pygame.display.flip()
 
-			death_screen = pygame.image.load(image_death_screen).convert()
-			window.blit(death_screen, (0,0))
-			pygame.display.flip()
+        #Condition for putting the badguy to sleep, dying and winning base on the level structure
+        #T in file stand for 'Test', where the program test if the user got the 3 items or not
+        #If he does, the guard sleeps and he can progress to the Finish (F) case
+        if level.structure[macgyver.case_y][macgyver.case_x] == 'T' and object_count == 3:
+            badguy.sleep(IMAGE_BADGUY_SLEEPING, level, 13, 14)
+            window.blit(badguy.sprite, (badguy.x, badguy.y))
+            pygame.display.flip()
+
+        #MacGyver reaches the Test case without 3 objects, he dies
+        if level.structure[macgyver.case_y][macgyver.case_x] == 'T' and object_count < 3:
+            setloops(0,1,0,0,1)
+
+        #MacGyver reaches the Finish case, game is won
+        if level.structure[macgyver.case_y][macgyver.case_x] == 'F':
+            setloops(1,0,0,0,1)
+            #continue_victory_screen = 1
+
+
+        #VICTORY SCREEN LOOP
+        while continue_victory_screen:
+
+            pygame.time.Clock().tick(30)
+            for event in pygame.event.get():
+
+                #End of all the loops if escape is pressed
+                if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                    setloops(0,0,0,0,0)
+
+                #User is back to home screen if he presses any key	
+                elif event.type == KEYDOWN and event.key != K_ESCAPE:				
+                    setloops(0,0,0,1,1)
+
+            victory_screen = pygame.image.load(IMAGE_VICTORY_SCREEN).convert()
+            window.blit(victory_screen, (0,0))
+            pygame.display.flip()
+
+        #DEATH SCREEN LOOP
+        while continue_death_screen:
+
+            pygame.time.Clock().tick(30)
+            for event in pygame.event.get():
+
+                #End of all the loops if escape is pressed
+                if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+                    setloops(0,0,0,0,0)
+
+                #User is back to home screen if he presses any key
+                elif event.type == KEYDOWN and event.key != K_ESCAPE:				
+                    setloops(0,0,0,1,1)
+
+            death_screen = pygame.image.load(IMAGE_DEATH_SCREEN).convert()
+            window.blit(death_screen, (0,0))
+            pygame.display.flip()
 

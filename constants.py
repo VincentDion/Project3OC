@@ -3,28 +3,28 @@
 """Constants for the game MacGyver escapes !"""
 
 #Size of game window
-number_sprite_side = 15
-size_sprite = 30 # in pixels
-side_window = number_sprite_side * size_sprite
+NUMBER_SPRITE_SIDE = 15
+SIZE_SPRITE = 30 # in pixels
+SIDE_WINDOW = NUMBER_SPRITE_SIDE * SIZE_SPRITE
 #small add of space at the bottom to display inventory
-height_inventory_space = 50 
+HEIGHT_INVENTORY_SPACE = 50 
 
 #Customization of window
-window_title = "MacGyver escapes !"
-image_window_icon = "images/hero.png"
+WINDOW_TITLE = "MacGyver escapes !"
+IMAGE_WINDOW_ICON = "images/hero.png"
 
 #game images
-image_floor = "images/floor_room.png"
-image_wall = "images/wall.png"
-image_hero = "images/hero.png"
-image_badguy = "images/badguy.png"
-image_badguy_sleeping = "images/badguy_sleeping.png"
-image_object1 = "images/object1.png"
-image_object2 = "images/object2.png"
-image_object3 = "images/object3.png"
-image_victory_screen = "images/victory_screen.png"
-image_death_screen = "images/deathscreen.png"
-image_stairs = "images/stairs.png"
-image_start = "images/start_tile.png"
-image_inventory = "images/inventory_space.png"
-image_main_menu = "images/main_menu.png"
+IMAGE_FLOOR = "images/floor_room.png"
+IMAGE_WALL = "images/wall.png"
+IMAGE_HERO = "images/hero.png"
+IMAGE_BADGUY = "images/badguy.png"
+IMAGE_BADGUY_SLEEPING = "images/badguy_sleeping.png"
+IMAGE_OBJECT1 = "images/object1.png"
+IMAGE_OBJECT2 = "images/object2.png"
+IMAGE_OBJECT3 = "images/object3.png"
+IMAGE_VICTORY_SCREEN = "images/victory_screen.png"
+IMAGE_DEATH_SCREEN = "images/deathscreen.png"
+IMAGE_STAIRS = "images/stairs.png"
+IMAGE_START = "images/start_tile.png"
+IMAGE_INVENTORY = "images/inventory_space.png"
+IMAGE_MAIN_MENU = "images/main_menu.png"
